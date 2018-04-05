@@ -1,0 +1,28 @@
+InputAndPreprocess      Checking the input data.
+MASCOT-package          Model-based Analysis of Single cell CRISPR
+                        knockOuT screening
+batchCheckAndAdjust     Adjusting batch effect.
+cellFilteringAndKOefficiencyCalculating
+                        Filtering out cells and calculating
+                        perturbation efficiency.
+getHighDispersionDifferenceGenes
+                        Identify variable genes.
+getOffTargetInfo        Evaluating the offtarget effect of sgRNAs.
+getRatioAndDiff         Calcualting topic distribution difference
+                        between case and control.
+getTopics               Obtaining the result by performing topic model.
+plot_cellAndTopic       Plotting the heatmap between cell and topic.
+plot_filtering_information_component
+                        plot cells filtered out by each filtering
+                        steps.
+rankDiff                Obtaining knockouts with highly different
+                        ranking between two different condition in same
+                        cells.
+rankOverall             Obtaining the overall perturbation impact
+                        ranking list.
+rankTopicSpecific       Obtaining the topic-specific ranking list.
+singleCellCRISPRscreen_qc
+                        Quality control for single-cell CRISPR
+                        screening data.
+topic_functionAnnotation
+                        Annotating each topic's function.
