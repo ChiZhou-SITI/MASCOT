@@ -1,5 +1,5 @@
-#MASCOT
-**M**odel-based **A**nalysis of **S**ingle-cell **C**RISPR knock**O**u**T** screening
+# MASCOT
+- **M**odel-based **A**nalysis of **S**ingle-cell **C**RISPR knock**O**u**T** screening
 
 - **MASCOT** is the first one-step applicable pipeline based on topic model to analyze single-cell CRISPR screening data, which could help to prioritize the knockout gene impact in a cellular heterogeneity level.
 
