@@ -11,13 +11,13 @@
     * Install: you can install the **MASCOT** package from Github using **devtools** packages.<br>
 
 
-```r
-require(devtools)
-install_github("BinDuan/MASCOT")
-library(MASCOT)
-```
+    ```r
+    require(devtools)
+    install_github("BinDuan/MASCOT")
+    library(MASCOT)
+    ```
 
-- The data **meta_counts** is a matrix containing the read counts of the microbe in each individual sample mapped to a certain microbial reference. The data **genus_2_phylum** is a data frame containing the annotation for the microbe in data meta_counts
+    * The data **meta_counts** is a matrix containing the read counts of the microbe in each individual sample mapped to a certain microbial reference. The data **genus_2_phylum** is a data frame containing the annotation for the microbe in data meta_counts
 
 
 ```r
