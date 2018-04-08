@@ -1,4 +1,4 @@
-# MASCOT: `M`odel-based `A`nalysis of `S`ingle-cell `C`RISPR knock`O`u`T` screening
+# MASCOT: Model-based Analysis of Single-cell CRISPR knockOuT screening
 
 * **MASCOT** is the first one-step applicable pipeline based on topic model to analyze single-cell CRISPR screening data, which could help to prioritize the knockout gene impact in a cellular heterogeneity level.
 
@@ -22,17 +22,81 @@
     * The data **meta_counts** is a matrix containing the read counts of the microbe in each individual sample mapped to a certain microbial reference. The data **genus_2_phylum** is a data frame containing the annotation for the microbe in data meta_counts
 
 
-```r
-dim(meta_counts)
-```
+    ```r
+    # expression_profile
+    dim(crop_unstimulated_expression_profile)
+    ```
+    ```
+    ## [1] 36722  2646
+    ```
+    ```r
+    crop_unstimulated_expression_profile[1:3,1:3]
+    ```
+    ```
+    ##          GCAGTCCTTCTN ACGTAGGGGTAN AAACAACCGAAN
+    ## A1BG                0            0            0
+    ## A1BG-AS1            0            0            0
+    ## A1CF                0            0            0
+    ```
+    ```r
+    # sample_info_gene
+    length(crop_unstimulated_sample_info_gene)
+    ```
+    ```
+    ## [1] 2646
+    ```
+    ```r
+    class(crop_unstimulated_sample_info_gene)
+    head(crop_unstimalated_sample_info_gene)
+    ```
+    ```
+    ## [1] "character"
+    
+    ## GCAGTCCTTCTN ACGTAGGGGTAN AAACAACCGAAN TCAGTGGCTTCT AGTATTCTCACN TTATAGCATGCA 
+    ##      "NR4A1"     "NFATC2"       "CTRL"       "CTRL"       "CTRL"       "CTRL"
+    ```
+    ```r
+    # sample_info_sgRNA
+    length(crop_unstimulated_sample_info_sgRNA)
+    ```
+    ```
+    ## [1] 2646
+    ```
+    ```r
+    class(crop_unstimulated_sample_info_sgRNA)
+    head(crop_unstimulated_sample_info_sgRNA)
+    ```
+    ```
+    ##[1] "character"
+    
+    ##         GCAGTCCTTCTN          ACGTAGGGGTAN    AAACAACCGAAN   TCAGTGGCTTCT    AGTATTCTCACN    TTATAGCATGCA  
+    ## "Tcrlibrary_NR4A1_1"  "Tcrlibrary_NFATC2_1"    "CTRL00698"    "CTRL00320"     "CTRL00087"     "CTRL00640" 
+    ```
+    ```r
+    # data preprocessing
+    crop_seq_list<-InputAndPreprocess(crop_unstimulated_expression_profile,crop_unstimulated_sample_info_gene,crop_unstimulated_sample_info_sgRNA,sample_info_batch=NULL)
+    crop_seq_qc<-singleCellCRISPRscreen_qc(crop_seq_list$expression_profile,crop_seq_list$sample_info_gene,gene_low=500,species="Hs",plot=T)
+    crop_seq_filtered<-cellFilteringAndKOefficiencyCalculating(crop_seq_qc$expression_profile_qc,crop_seq_qc$sample_info_gene_qc,crop_seq_list$sample_info_sgRNA,nonzero=0.01,grna_cell_num=10,fold_change=0.5,plot=T)
+    component<-plot_filtering_information_component(crop_seq_list$sample_info_gene,crop_seq_qc$sample_info_gene_qc,crop_seq_filtered$nonzeroRatio,crop_seq_filtered$sample_info_gene_qc_zr_se,crop_seq_filtered$sample_info_gene_qc_zr_se_pc)
+    crop_seq_vargene<-getHighDispersionDifferenceGenes(crop_seq_filtered$expression_profile_qc_zr_se_pc,crop_seq_filtered$sample_info_gene_qc_zr_se_pc,plot=T)
+    optimalTopics<-getTopics(crop_seq_vargene,crop_seq_filtered$sample_info_gene_qc_zr_se_pc,plot=T)
+    plot_cellAndTopic(optimalTopics)
+    topic_enrichment<-topic_functionAnnotation(optimalTopics,species="Hs")
 
-```
-## [1]  39 129
-```
+    
 
-```r
-colnames(meta_counts)[1:10]
-```
+    
+
+
+    
+    
+
+    
+    
+
+    
+
+
 
 ```
 ##  [1] "Abiotrophia"     "Acholeplasma"    "Achromobacter"  
