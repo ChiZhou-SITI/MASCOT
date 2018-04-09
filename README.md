@@ -85,7 +85,7 @@
     ```
     ![](figure/nonzeroRationInControlGroup.png)<!-- -->
     ![](figure/sgRNA_efficiency.png)<!-- -->
-    ![](figure/phenotypeCapture.png)<!-- -->
+    ![](figure/PhenotypeCapture.png)<!-- -->
     ![](figure/KO_efficiency.png)<!-- -->
     
     
