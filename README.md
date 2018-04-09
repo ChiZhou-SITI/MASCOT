@@ -70,30 +70,59 @@
     ```r
     # integrate the input data and filter filter mitochondrial ribosomal protein(^MRP) and ribosomal protein(^RP)
     crop_seq_list<-InputAndPreprocess(crop_unstimulated_expression_profile,crop_unstimulated_sample_info_gene,crop_unstimulated_sample_info_sgRNA,sample_info_batch=NULL)
+    ```
     
+    ```r
     # quality control
     crop_seq_qc<-singleCellCRISPRscreen_qc(crop_seq_list$expression_profile,crop_seq_list$sample_info_gene,gene_low=500,species="Hs",plot=T)
+    ```
+    ![](figure/data_qualityControl.png)<!-- -->
+    
+    ```r
     
     # other filterings, including "zero_ratio", "sgRNA efficiency" and "phenotype capture".
     crop_seq_filtered<-cellFilteringAndKOefficiencyCalculating(crop_seq_qc$expression_profile_qc,crop_seq_qc$sample_info_gene_qc,crop_seq_list$sample_info_sgRNA,nonzero=0.01,grna_cell_num=10,fold_change=0.5,plot=T)
+    ```
+    ![](figure/nonzeroRationInControlGroup.png)<!-- -->
+    ![](figure/sgRNA_efficiency.png)<!-- -->
+    ![](figure/phenotypeCapture.png)<!-- -->
+    ![](figure/KO_efficiency.png)<!-- -->
     
+    
+    ```r
     # plot cells with different component.
     component<-plot_filtering_information_component(crop_seq_list$sample_info_gene,crop_seq_qc$sample_info_gene_qc,crop_seq_filtered$nonzeroRatio,crop_seq_filtered$sample_info_gene_qc_zr_se,crop_seq_filtered$sample_info_gene_qc_zr_se_pc)
     ```
+    ![](figure/geneInfomationComponent.png)<!-- -->
+    
+    
     * The second step: model building
     ```r
     # obtain high dispersion different genes.
     crop_seq_vargene<-getHighDispersionDifferenceGenes(crop_seq_filtered$expression_profile_qc_zr_se_pc,crop_seq_filtered$sample_info_gene_qc_zr_se_pc,plot=T)
+    ```
+    ![](figure/getHighDispersionExpressionGene.png)<!-- -->
+    
+    ```r
     
     # get topics and select topic number automatically.
-   optimalTopics<-getTopics(crop_seq_vargene,crop_seq_filtered$sample_info_gene_qc_zr_se_pc,plot=T)
+    optimalTopics<-getTopics(crop_seq_vargene,crop_seq_filtered$sample_info_gene_qc_zr_se_pc,plot=T)
+    ```
+    ![](figure/select_topicNumber.png)<!-- -->
     
+    ```r
     # plot heatmap between cells and topics.
-   plot_cellAndTopic(optimalTopics)
-   
+    plot_cellAndTopic(optimalTopics)
+    ```
+    ![](figure/heatmap_cellsAndtopics.png)<!-- -->
+    
+    ```r
     # annotate each topic's functions. Hs(homo sapiens) or Mm(mus musculus) are available.
-   topic_enrichment<-topic_functionAnnotation(optimalTopics,species="Hs")
-   
+    topic_enrichment<-topic_functionAnnotation(optimalTopics,species="Hs")
+    ```
+    ![](figure/topic_annotation.png)<!-- -->
+    
+    ```r
     # get offtarget information. This step won't affect the final ranking result, but give you offtarget information. If you don't want to consider this factor, you can skip this step. 
     library(CRISPRseek)
     library("BSgenome.Hsapiens.UCSC.hg38")
