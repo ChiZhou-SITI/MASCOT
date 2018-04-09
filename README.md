@@ -65,6 +65,7 @@
     ##         GCAGTCCTTCTN          ACGTAGGGGTAN    AAACAACCGAAN   TCAGTGGCTTCT    AGTATTCTCACN    TTATAGCATGCA  
     ## "Tcrlibrary_NR4A1_1"  "Tcrlibrary_NFATC2_1"    "CTRL00698"    "CTRL00320"     "CTRL00087"     "CTRL00640" 
     ```
+    
     * The first step: data preprocessing.
     ```r
     # integrate the input data and filter filter mitochondrial ribosomal protein(^MRP) and ribosomal protein(^RP)
@@ -78,35 +79,39 @@
     
     # plot cells with different component.
     component<-plot_filtering_information_component(crop_seq_list$sample_info_gene,crop_seq_qc$sample_info_gene_qc,crop_seq_filtered$nonzeroRatio,crop_seq_filtered$sample_info_gene_qc_zr_se,crop_seq_filtered$sample_info_gene_qc_zr_se_pc)
-    
+    ```
+    * The second step: model building
+    ```r
     # obtain high dispersion different genes.
     crop_seq_vargene<-getHighDispersionDifferenceGenes(crop_seq_filtered$expression_profile_qc_zr_se_pc,crop_seq_filtered$sample_info_gene_qc_zr_se_pc,plot=T)
     
     # get topics and select topic number automatically.
-    optimalTopics<-getTopics(crop_seq_vargene,crop_seq_filtered$sample_info_gene_qc_zr_se_pc,plot=T)
+   optimalTopics<-getTopics(crop_seq_vargene,crop_seq_filtered$sample_info_gene_qc_zr_se_pc,plot=T)
     
     # plot heatmap between cells and topics.
-    plot_cellAndTopic(optimalTopics)
+   plot_cellAndTopic(optimalTopics)
+   
     # annotate each topic's functions. Hs(homo sapiens) or Mm(mus musculus) are available.
-    topic_enrichment<-topic_functionAnnotation(optimalTopics,species="Hs")
-    ```
-    ```r
-    # get offtarget information. This step won't affect the final ranking result, but give you offtarget information. If you want to consider this factor, you can do this by CRISPRseek 
-    # library(CRISPRseek)
-    # library("BSgenome.Hsapiens.UCSC.hg38")
-    # library(TxDb.Hsapiens.UCSC.hg38.knownGene)
-    # library(org.Hs.eg.db)
-    # library(org.Mm.eg.db)
-    # gRNAFilePath<-"~/data/KO_seq_data/crop_seq_data/grna.fa"
-    # crop_results <- offTargetAnalysis(inputFilePath = gRNAFilePath, findgRNAs = FALSE,findgRNAsWithREcutOnly = FALSE,findPairedgRNAOnly = FALSE, BSgenomeName = Hsapiens,txdb = TxDb.Hsapiens.UCSC.hg38.knownGene,min.score=1,scoring.method = "CFDscore",orgAnn = org.Hs.egSYMBOL, max.mismatch = 3,outputDir=getwd(), overwrite = TRUE)
+   topic_enrichment<-topic_functionAnnotation(optimalTopics,species="Hs")
+   
+    # get offtarget information. This step won't affect the final ranking result, but give you offtarget information. If you don't want to consider this factor, you can skip this step. 
+    library(CRISPRseek)
+    library("BSgenome.Hsapiens.UCSC.hg38")
+    library(TxDb.Hsapiens.UCSC.hg38.knownGene)
+    library(org.Hs.eg.db)
+    library(org.Mm.eg.db)
+    gRNAFilePath<-"~/grna.fa"
+    crop_results <- offTargetAnalysis(inputFilePath = gRNAFilePath, findgRNAs = FALSE,findgRNAsWithREcutOnly = FALSE,findPairedgRNAOnly = FALSE, BSgenomeName = Hsapiens,txdb = TxDb.Hsapiens.UCSC.hg38.knownGene,min.score=1,scoring.method = "CFDscore",orgAnn = org.Hs.egSYMBOL, max.mismatch = 3,outputDir=getwd(), overwrite = TRUE)
+    # then, check the offtargets further.
+    offTarget_Info<-getOffTargetInfo(crop_results,crop_seq_filtered$expression_profile_qc_zr_se_pc,crop_seq_filtered$sample_info_gene_qc_zr_se_pc,crop_seq_list$sample_info_sgRNA)
     
-    # then, check the offtargets further.                            #offTarget_Info<-getOffTargetInfo(crop_results,crop_seq_filtered$expression_profile_qc_zr_se_pc,crop_seq_filtered$sample_info_gene_qc_zr_se_pc,crop_seq_list$sample_info_sgRNA)
     ```
-
+    * The third step: knockout effect prioritizing
     ```r
     # knockout effect prioritizing
     
-    # calculate topic distribution for each cell   ratioDiff<-getRatioAndDiff(optimalTopics,crop_seq_filtered$sample_info_gene_qc_zr_se_pc,KO_efficiency=crop_seq_filtered$KO_efficiency)
+    # calculate topic distribution for each cell
+    ratioDiff<-getRatioAndDiff(optimalTopics,crop_seq_filtered$sample_info_gene_qc_zr_se_pc,KO_efficiency=crop_seq_filtered$KO_efficiency)
     
     # calculate the overall perturbation effect ranking list with offtarget_info calculated
     rankTotal_result<-rankOverall(ratioDiff,offTarget_hash=offTarget_info)
@@ -116,10 +121,17 @@
     # calculate the topic-specific ranking list 
     rankTopicSpecific_result<-rankTopicSpecific(rankOverall_result$rankOverall_result_detail)
     
+    ```
+    * output
     ```r
     # output
     
-    # output the overall perturbation effect ranking list with concision and detailed styles.    write.table(rankOverall_result$rankOverall_result_concision,"~/rankOverall_result_concision.txt",col.names=T,row.names=F,quote=F,sep="\t")   write.table(rankOverall_result$rankOverall_result_detail,"~/rankOverall_result_detail.txt",col.names=T,row.names=T,quote=F,sep="\t")
+    # output the overall perturbation effect ranking list with concision and detailed styles.
+    write.table(rankOverall_result$rankOverall_result_concision,"~/rankOverall_result_concision.txt",col.names=T,row.names=F,quote=F,sep="\t")
+    write.table(rankOverall_result$rankOverall_result_detail,"~/rankOverall_result_detail.txt",col.names=T,row.names=T,quote=F,sep="\t")
     
-    # output the topic-specific ranking list with concision and detailed styles.     write.table(rankTopicSpecific_result$rankTopicSpecific_result_concision,"~/rankTopicSpecific_result_concision.txt",col.names=T,row.names=T,quote=F,sep="\t")    write.table(rankTopicSpecific_result$rankTopicSpecific_result_detail,"/rankTopicSpecific_result_detail.txt",col.names=T,row.names=T,quote=F,sep="\t")
+    # output the topic-specific ranking list with concision and detailed styles.
+    write.table(rankTopicSpecific_result$rankTopicSpecific_result_concision,"~/rankTopicSpecific_result_concision.txt",col.names=T,row.names=T,quote=F,sep="\t")
+    write.table(rankTopicSpecific_result$rankTopicSpecific_result_detail,"/rankTopicSpecific_result_detail.txt",col.names=T,row.names=T,quote=F,sep="\t")
     
+ 
