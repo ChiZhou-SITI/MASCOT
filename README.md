@@ -83,8 +83,8 @@
     # other filterings, including "zero_ratio", "sgRNA efficiency" and "phenotype capture".
     crop_seq_filtered<-cellFilteringAndKOefficiencyCalculating(crop_seq_qc$expression_profile_qc,crop_seq_qc$sample_info_gene_qc,crop_seq_list$sample_info_sgRNA,nonzero=0.01,grna_cell_num=10,fold_change=0.5,plot=T)
     ```
-    ![](figure/nonzeroRationInControlGroup.png)<!-- -->
-    ![](figure/sgRNA_efficiency.png)<!-- -->
+    ![](figure/nonzeroRationInControlGroup.pdf)<!-- -->
+    ![](figure/sgRNA_efficiency.pdf)<!-- -->
     ![](figure/phenotypeCapture.png)<!-- -->
     ![](figure/KO_efficiency.png)<!-- -->
     
