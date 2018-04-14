@@ -157,10 +157,10 @@
     
     # output the overall perturbation effect ranking list with concision and detailed styles.
     write.table(rankOverall_result$rankOverall_result_concision,"~/rankOverall_result_concision.txt",col.names=T,row.names=F,quote=F,sep="\t")
-    write.table(rankOverall_result$rankOverall_result_detail,"~/rankOverall_result_detail.txt",col.names=T,row.names=T,quote=F,sep="\t")
+    write.table(rankOverall_result$rankOverall_result_detail,"~/rankOverall_result_detail.txt",col.names=T,row.names=F,quote=F,sep="\t")
     
     # output the topic-specific ranking list with concision and detailed styles.
-    write.table(rankTopicSpecific_result$rankTopicSpecific_result_concision,"~/rankTopicSpecific_result_concision.txt",col.names=T,row.names=T,quote=F,sep="\t")
-    write.table(rankTopicSpecific_result$rankTopicSpecific_result_detail,"/rankTopicSpecific_result_detail.txt",col.names=T,row.names=T,quote=F,sep="\t")
+    write.table(rankTopicSpecific_result$rankTopicSpecific_result_concision,"~/rankTopicSpecific_result_concision.txt",col.names=T,row.names=F,quote=F,sep="\t")
+    write.table(rankTopicSpecific_result$rankTopicSpecific_result_detail,"/rankTopicSpecific_result_detail.txt",col.names=T,row.names=F,quote=F,sep="\t")
     
  
