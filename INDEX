@@ -1,4 +1,6 @@
 InputAndPreprocess      Checking the input data.
+InputAndPreprocessFor10X
+                        Input data with 10X type.
 MASCOT-package          Model-based Analysis of Single cell CRISPR
                         knockOuT screening
 batchCheckAndAdjust     Adjusting batch effect.

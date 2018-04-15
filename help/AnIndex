@@ -6,6 +6,7 @@ getOffTargetInfo	getOffTargetInfo
 getRatioAndDiff	getRatioAndDiff
 getTopics	getTopics
 InputAndPreprocess	InputAndPreprocess
+InputAndPreprocessFor10X	InputAndPreprocessFor10X
 MASCOT	MASCOT
 plot_cellAndTopic	plot_cellAndTopic
 plot_filtering_information_component	plot_filtering_information_component
