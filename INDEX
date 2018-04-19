@@ -1,30 +1,24 @@
-InputAndPreprocess      Checking the input data.
-InputAndPreprocessFor10X
-                        Input data with 10X type.
-MASCOT-package          Model-based Analysis of Single cell CRISPR
-                        knockOuT screening
-batchCheckAndAdjust     Adjusting batch effect.
-cellFilteringAndKOefficiencyCalculating
-                        Filtering out cells and calculating
-                        perturbation efficiency.
-getHighDispersionDifferenceGenes
-                        Identify variable genes.
-getOffTargetInfo        Evaluating the offtarget effect of sgRNAs.
-getRatioAndDiff         Calcualting topic distribution difference
-                        between case and control.
-getTopics               Obtaining the result by performing topic model.
-plot_cellAndTopic       Plotting the heatmap between cell and topic.
-plot_filtering_information_component
-                        plot cells filtered out by each filtering
-                        steps.
-rankDiff                Obtaining knockouts with highly different
-                        ranking between two different condition in same
-                        cells.
-rankOverall             Obtaining the overall perturbation impact
-                        ranking list.
-rankTopicSpecific       Obtaining the topic-specific ranking list.
-singleCellCRISPRscreen_qc
-                        Quality control for single-cell CRISPR
+Batch_adjust            Adjusting batch effect.
+Cell_filtering          Filtering cells and calculating the overall
+                        knockout efficiency.
+Cell_qc                 Quality control for single-cell CRISPR
                         screening data.
-topic_functionAnnotation
-                        Annotating each topic's function.
+Get_distribution_diff   Calcualting topic distribution difference
+                        between case and control.
+Get_high_var_genes      Identify highly dispersion differentially
+                        expressed genes.
+Get_offtarget           Evaluating the offtarget effect of sgRNAs.
+Get_topics              Obtaining the result by performing topic model.
+Input_preprocess        Checking the input data.
+Input_preprocess_10X    Checking the input data if the data was
+                        generated with 10X.
+Plot_cell_topic         Plotting a heatmap showing the distribution of
+                        cells in each topic.
+Plot_filtering_overview
+                        plot cells filtered by each filtering steps.
+Rank_diff               Obtaining important knockouts between two
+                        different conditions.
+Rank_overall            Obtaining the overall perturbation effect
+                        ranking list.
+Rank_topic_specific     Obtaining the topic-specific ranking list.
+Topic_func_anno         Annotating each topic's function.
